@@ -29,8 +29,32 @@ gun_deaths %>%
     labs( title = "Gun Death in Different Seasons",
           x = "Season",
           y = "Number of Gun Death")
-     
-     
-     
+   
+# answer to question 6
+   gun_deaths %>%
+    filter(!is.na(race), !is.na(intent), race == "White"| race == "Black"| race == "Hispanic") %>%
+# category to category
+     count(race, intent) %>%
+      ggplot(aes(x=race, y=intent))+
+      geom_tile(aes(fill = n))+
+      labs( title = "Gun Death of Different Intents in White, Black and Hispanic")
+      
+# answer to question 7
+  # police and age
+   gun_deaths %>%
+     filter(!is.na(police), !is.na(age)) %>%
+     ggplot(aes(x=police, y= age))+
+       geom_boxplot(aes(group = cut_width(police,1)))
+  #police and race
+   gun_deaths %>%
+     filter(!is.na(police), !is.na(race)) %>%
+     ggplot(aes(x=police)) +
+      geom_freqpoly(aes(color= race), binwidth = 0.5)
+   #police/race/age
+   gun_deaths %>%
+     filter(!is.na(police), !is.na(race), !is.na(age)) %>%
+     ggplot(aes(x=police, y= age))+
+     geom_boxplot(aes(group = cut_width(police,1)))+
+     facet_grid(.~race)
    
    
